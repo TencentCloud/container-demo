@@ -8,4 +8,4 @@
 --- 
 如果您对容器，Kubernetes 已经有基础了解，可使用下方实例快速体验本产品。
 ### 使用容器服务 TKE 部署 WordPress 应用
-待更新
+待更新 - dehonghao
