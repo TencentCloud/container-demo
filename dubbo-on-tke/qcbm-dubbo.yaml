@@ -1,0 +1,468 @@
+---
+# user-service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  namespace: qcbm
+  labels:
+    app: user-service
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: user-service
+        version: v1
+    spec:
+      containers:
+        - name: user-service
+          image: ccr.ccs.tencentyun.com/qcbm/user-service:1.1.4
+          env:
+            - name: NACOS_HOST  # dubbo服务注册中心nacos的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: NACOS_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: MYSQL_HOST  # Mysql 地址
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: REDIS_HOST  # Redis的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: MYSQL_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_ACCOUNT
+                  name: qcbm-keys
+                  optional: false
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASSWORD
+                  name: qcbm-keys
+                  optional: false
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASSWORD
+                  name: qcbm-keys
+                  optional: false
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  key: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+                  name: qcbm-env
+                  optional: false
+            - name: SW_AGENT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: SW_AGENT_AUTHENTICATION
+                  name: qcbm-keys
+                  optional: false
+          ports:
+            - containerPort: 20880 # dubbo 端口号
+              protocol: TCP
+      imagePullSecrets: # 拉取镜像的 token
+        - name: qcloudregistrykey
+
+---
+# 部署 store-service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-service
+  namespace: qcbm
+  labels:
+    app: store-service
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: store-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: store-service
+        version: v1
+    spec:
+      containers:
+        - name: store-service
+          image: ccr.ccs.tencentyun.com/qcbm/store-service:1.1.4
+          env: # pod 环境变量
+            - name: NACOS_HOST  # dubbo服务注册中心nacos的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: NACOS_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: MYSQL_HOST  # Mysql的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: REDIS_HOST  # Redis的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: MYSQL_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_ACCOUNT
+                  name: qcbm-keys
+                  optional: false
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASSWORD
+                  name: qcbm-keys
+                  optional: false
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASSWORD
+                  name: qcbm-keys
+                  optional: false
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  key: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+                  name: qcbm-env
+                  optional: false
+            - name: SW_AGENT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: SW_AGENT_AUTHENTICATION
+                  name: qcbm-keys
+                  optional: false
+          ports:
+            - containerPort: 20880
+              protocol: TCP
+      imagePullSecrets:
+        - name: qcloudregistrykey
+
+---
+# 部署 favorites-service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: favorites-service
+  namespace: qcbm
+  labels:
+    app: favorites-service
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: favorites-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: favorites-service
+        version: v1
+    spec:
+      containers:
+        - name: favorites-service
+          image: ccr.ccs.tencentyun.com/qcbm/favorites-service:1.1.4
+          env: # pod 环境变量
+            - name: NACOS_HOST  # dubbo服务注册中心nacos的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: NACOS_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: MYSQL_HOST  # Mysql的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: REDIS_HOST  # Redis的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: MYSQL_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_ACCOUNT
+                  name: qcbm-keys
+                  optional: false
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASSWORD
+                  name: qcbm-keys
+                  optional: false
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASSWORD
+                  name: qcbm-keys
+                  optional: false
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  key: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+                  name: qcbm-env
+                  optional: false
+            - name: SW_AGENT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: SW_AGENT_AUTHENTICATION
+                  name: qcbm-keys
+                  optional: false
+          ports:
+            - containerPort: 20880
+              protocol: TCP
+      imagePullSecrets:
+        - name: qcloudregistrykey
+
+---
+# 部署 order-service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: qcbm
+  labels:
+    app: order-service
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: order-service
+        version: v1
+    spec:
+      imagePullSecrets:
+        - name: qcloudregistrykey
+      containers:
+        - name: order-service
+          image: ccr.ccs.tencentyun.com/qcbm/order-service:1.1.4
+          env: # pod 环境变量
+            - name: NACOS_HOST  # dubbo服务注册中心nacos的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: NACOS_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: MYSQL_HOST  # Mysql的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: REDIS_HOST  # Redis的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: REDIS_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: MYSQL_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_ACCOUNT
+                  name: qcbm-keys
+                  optional: false
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_PASSWORD
+                  name: qcbm-keys
+                  optional: false
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASSWORD
+                  name: qcbm-keys
+                  optional: false
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  key: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+                  name: qcbm-env
+                  optional: false
+            - name: SW_AGENT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: SW_AGENT_AUTHENTICATION
+                  name: qcbm-keys
+                  optional: false
+          ports:
+            - containerPort: 20880
+              protocol: TCP
+
+---
+# 部署 qcbm-gateway
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qcbm-gateway
+  namespace: qcbm
+  labels:
+    app: qcbm-gateway
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qcbm-gateway
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: qcbm-gateway
+        version: v1
+    spec:
+      imagePullSecrets:
+        - name: qcloudregistrykey
+      containers:
+        - name: qcbm-gateway
+          image: ccr.ccs.tencentyun.com/qcbm/qcbm-gateway:1.1.4
+          env: # pod 环境变量
+            - name: NACOS_HOST  # dubbo服务注册中心nacos的IP地址
+              valueFrom:
+                configMapKeyRef:
+                  key: NACOS_HOST
+                  name: qcbm-env
+                  optional: false
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  key: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+                  name: qcbm-env
+                  optional: false
+            - name: SW_AGENT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: SW_AGENT_AUTHENTICATION
+                  name: qcbm-keys
+                  optional: false
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+
+---
+# api-gateway Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+  labels:
+    app: api-gateway
+  namespace: qcbm
+  annotations:
+    # 请将 xxx 替换成 Subnet-K8S 子网的 CLB 实例 ID
+    service.kubernetes.io/loadbalance-id: lb-xxx
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:  # 将后端服务 qcbm-gateway 和该 Service 进行映射
+    app: qcbm-gateway
+    version: v1
+  type: LoadBalancer
+
+---
+# 部署 qcbm-front deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qcbm-front
+  namespace: qcbm
+  labels:
+    app: qcbm-front
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qcbm-front
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: qcbm-front
+        version: v1
+    spec:
+      imagePullSecrets:
+        - name: qcloudregistrykey
+      containers:
+        - name: qcbm-front
+          image: ccr.ccs.tencentyun.com/qcbm/qcbm-front:1.1.3
+          ports:
+            - containerPort: 80
+              protocol: TCP
+
+---
+# 部署 qcbm-front service
+apiVersion: v1
+kind: Service
+metadata:
+  name: qcbm-front
+  namespace: qcbm
+  annotations:
+    # 请将 xxx 替换成 Subnet-K8S 子网的 CLB 实例 ID
+    service.kubernetes.io/loadbalance-id: lb-xxx
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  selector: # 将后端服务 qcbm-gateway 和该 Service 进行映射
+    app: qcbm-front
+    version: v1
+  type: LoadBalancer
+
+---
+# 部署 qcbm-front ingress
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: front
+  namespace: qcbm
+  annotations:
+    ingress.cloud.tencent.com/direct-access: "false"
+    kubernetes.io/ingress.class: qcloud
+    kubernetes.io/ingress.extensiveParameters: '{"AddressIPVersion":"IPV4"}'
+    kubernetes.io/ingress.http-rules: '[{"host":"qcbm.com","path":"/","backend":{"serviceName":"qcbm-front","servicePort":"80"}}]'
+spec:
+  rules:
+    - host: qcbm.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: qcbm-front
+              servicePort: 80

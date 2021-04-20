@@ -1,0 +1,40 @@
+---
+# 创建命名空间
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: qcbm
+spec:
+  finalizers:
+    - kubernetes
+
+---
+# 创建 ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qcbm-env
+  namespace: qcbm
+data:
+  # 请将下面的 XXX 替换为实际 IP
+  NACOS_HOST: xxx   # Nacos IP
+  MYSQL_HOST: xxx   # MySQL IP
+  REDIS_HOST: xxx   # Redis IP
+  SW_AGENT_COLLECTOR_BACKEND_SERVICES: xxx   # TSW 接入地址
+
+---
+# 创建 Secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: qcbm-keys
+  namespace: qcbm
+  labels:
+    qcloud-app: qcbm-keys
+data:
+  # 请将下面的 XXX 替换为实际值
+  MYSQL_ACCOUNT:  xxx  # MySQL 账号, base64 编码后的字符串, 可使用 echo -n xxx | base64 生成
+  MYSQL_PASSWORD: xxx  # MySQL 密码, base64 编码后的字符串, 可使用 echo -n xxx | base64 生成
+  REDIS_PASSWORD: xxx  # Redis 密码, base64 编码后的字符串, 可使用 echo -n xxx | base64 生成
+  SW_AGENT_AUTHENTICATION: xxx  # TSW 接入 token, base64 编码后的字符串, 可使用 echo -n xxx | base64 生成
+type: Opaque

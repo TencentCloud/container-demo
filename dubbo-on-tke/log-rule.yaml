@@ -1,0 +1,110 @@
+---
+apiVersion: cls.cloud.tencent.com/v1
+kind: LogConfig
+metadata:
+  name: user-log-rule
+spec:
+  clsDetail:
+    extractRule: {}
+    # 单行文本
+    logType: minimalist_log
+    # 前将下面的 xxx 换成你自己的"日志主题ID"
+    topicId: xxx
+  inputDetail:
+    containerFile:
+      container: user-service
+      filePattern: '*.log'
+      logPath: /app/logs
+      namespace: qcbm
+      workload:
+        kind: deployment
+        name: user-service
+    type: container_file
+
+---
+apiVersion: cls.cloud.tencent.com/v1
+kind: LogConfig
+metadata:
+  name: store-log-rule
+spec:
+  clsDetail:
+    extractRule: {}
+    logType: minimalist_log
+    # 前将下面的 xxx 换成你自己的"日志主题ID"
+    topicId: xxx
+  inputDetail:
+    containerFile:
+      container: store-service
+      filePattern: '*.log'
+      logPath: /app/logs
+      namespace: qcbm
+      workload:
+        kind: deployment
+        name: store-service
+    type: container_file
+
+---
+apiVersion: cls.cloud.tencent.com/v1
+kind: LogConfig
+metadata:
+  name: order-log-rule
+spec:
+  clsDetail:
+    extractRule: {}
+    logType: minimalist_log
+    # 前将下面的 xxx 换成你自己的"日志主题ID"
+    topicId: xxx
+  inputDetail:
+    containerFile:
+      container: order-service
+      filePattern: '*.log'
+      logPath: /app/logs
+      namespace: qcbm
+      workload:
+        kind: deployment
+        name: order-service
+    type: container_file
+
+---
+apiVersion: cls.cloud.tencent.com/v1
+kind: LogConfig
+metadata:
+  name: favorites-log-rule
+spec:
+  clsDetail:
+    extractRule: {}
+    logType: minimalist_log
+    # 前将下面的 xxx 换成你自己的"日志主题ID"
+    topicId: xxx
+  inputDetail:
+    containerFile:
+      container: favorites-service
+      filePattern: '*.log'
+      logPath: /app/logs
+      namespace: qcbm
+      workload:
+        kind: deployment
+        name: favorites-service
+    type: container_file
+
+---
+apiVersion: cls.cloud.tencent.com/v1
+kind: LogConfig
+metadata:
+  name: gateway-log-rule
+spec:
+  clsDetail:
+    extractRule: {}
+    logType: minimalist_log
+    # 前将下面的 xxx 换成你自己的"日志主题ID"
+    topicId: xxx
+  inputDetail:
+    containerFile:
+      container: qcbm-gateway
+      filePattern: '*.log'
+      logPath: /app/logs
+      namespace: qcbm
+      workload:
+        kind: deployment
+        name: qcbm-gateway
+    type: container_file
