@@ -1,0 +1,152 @@
+#------------------------------------------------------------------------------
+# registry
+#------------------------------------------------------------------------------
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: registry
+  namespace: piggymetrics
+spec:
+  clusterIP: None
+  ports:
+    - name: http
+      port: 8761
+      protocol: TCP
+      targetPort: 8761
+  selector:
+    app: registry
+    version: v1
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: registry
+  namespace: piggymetrics
+  labels:
+    app: registry
+    version: v1
+spec:
+  serviceName: "registry"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: registry
+        version: v1
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: registry
+          image: ccr.ccs.tencentyun.com/piggymetrics/registry:1.0.2
+          ports:
+            - containerPort: 8761
+
+#------------------------------------------------------------------------------
+# config-server
+#------------------------------------------------------------------------------
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: config-server
+  namespace: piggymetrics
+spec:
+  clusterIP: None
+  ports:
+    - name: http
+      port: 8888
+      targetPort: 8888
+      protocol: TCP
+  selector:
+    app: config
+    version: v1
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: config
+  namespace: piggymetrics
+  labels:
+    app: config
+    version: v1
+spec:
+  serviceName: "config-server"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: config
+        version: v1
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: config
+          image: ccr.ccs.tencentyun.com/piggymetrics/config-server:2.0.03
+          ports:
+            - containerPort: 8888
+              protocol: TCP
+
+#------------------------------------------------------------------------------
+# rabbitmq
+#------------------------------------------------------------------------------
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rabbitmq
+  namespace: piggymetrics
+spec:
+  clusterIP: None
+  ports:
+    - name: "http"
+      port: 15672
+      targetPort: 15672
+      protocol: TCP
+    - name: "tcp"
+      port: 5672
+      targetPort: 5672
+  selector:
+    app: rabbitmq
+    version: v1
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+  namespace: piggymetrics
+  labels:
+    app: rabbitmq
+    version: v1
+spec:
+  serviceName: "rabbitmq"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+        version: v1
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3-management
+          ports:
+            - containerPort: 15672
+              protocol: TCP
+            - containerPort: 5672
+              protocol: TCP

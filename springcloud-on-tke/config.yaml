@@ -1,0 +1,48 @@
+#------------------------------------------------------------------------------
+# PiggyMetrics 依赖的基础配置 yaml
+#
+# 使用时请将如下配置替换成实际的值：
+# - MongoDB 的 IP：MONGODB_HOST
+# - MongoDB 的用户名：MONGODB_USER
+# - MongoDB 的密码：MONGODB_PASSWORD
+# - TSW 接入点：SW_AGENT_COLLECTOR_BACKEND_SERVICES
+# - TSW 接入 Token：SW_AGENT_AUTHENTICATION
+#------------------------------------------------------------------------------
+
+---
+# 创建命名空间
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: piggymetrics
+spec:
+  finalizers:
+    - kubernetes
+
+---
+# 创建 ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: piggymetrics-env
+  namespace: piggymetrics
+data:
+  # MongDB 的 IP 地址
+  MONGODB_HOST: 10.0.1.13
+  SW_AGENT_COLLECTOR_BACKEND_SERVICES: ap-shanghai.tencentservicewatcher.com:11800
+
+---
+# 创建 Secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: piggymetrics-keys
+  namespace: piggymetrics
+  labels:
+    qcloud-app: piggymetrics-keys
+data:
+  # 请将下面的 XXX 替换为实际值
+  MONGODB_USER: dXNlcg==
+  MONGODB_PASSWORD: dXNlcg==
+  SW_AGENT_AUTHENTICATION: dHN3X3NpdGVAOE5wNlF3V2ticVhtY1pPbzdTX2pJUVpmRWg5QkJuN3ZDX0xSN1ljSndGST0=
+type: Opaque

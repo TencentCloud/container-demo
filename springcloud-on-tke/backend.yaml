@@ -1,0 +1,430 @@
+#------------------------------------------------------------------------------
+# PiggyMetrics 后端微服务部署 yaml
+#
+# 使用时请将 service.kubernetes.io/loadbalance-id 替换成你自己的 CLB ID
+#------------------------------------------------------------------------------
+
+---
+# auth-service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  namespace: piggymetrics
+  labels:
+    app: auth-service
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: auth-service
+        version: v1
+    spec:
+      containers:
+        - name: auth-service
+          image: ccr.ccs.tencentyun.com/piggymetrics/auth-service:1.0.2
+          env:
+            - name: MONGODB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGODB_HOST
+                  name: piggymetrics-env
+                  optional: false
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MONGODB_USER
+                  name: piggymetrics-keys
+                  optional: false
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MONGODB_PASSWORD
+                  name: piggymetrics-keys
+                  optional: false
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  key: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+                  name: piggymetrics-env
+                  optional: false
+            - name: SW_AGENT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: SW_AGENT_AUTHENTICATION
+                  name: piggymetrics-keys
+                  optional: false
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+
+---
+# 部署 auth-server service
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+  namespace: piggymetrics
+  annotations:
+    # 请替换成 Subnet-K8S 子网的 CLB 实例 ID
+    service.kubernetes.io/loadbalance-id: lb-hfyt76co
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000
+      protocol: TCP
+  selector: # 将后端服务 qcbm-gateway 和该 Service 进行映射
+    app: auth-service
+    version: v1
+  type: LoadBalancer
+
+---
+# account-service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-service
+  namespace: piggymetrics
+  labels:
+    app: account-service
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: account-service
+        version: v1
+    spec:
+      containers:
+        - name: account-service
+          image: ccr.ccs.tencentyun.com/piggymetrics/account-service:1.0.5
+          env:
+            - name: MONGODB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGODB_HOST
+                  name: piggymetrics-env
+                  optional: false
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MONGODB_USER
+                  name: piggymetrics-keys
+                  optional: false
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MONGODB_PASSWORD
+                  name: piggymetrics-keys
+                  optional: false
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  key: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+                  name: piggymetrics-env
+                  optional: false
+            - name: SW_AGENT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: SW_AGENT_AUTHENTICATION
+                  name: piggymetrics-keys
+                  optional: false
+          ports:
+            - containerPort: 6000
+              protocol: TCP
+
+---
+# statistics-service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: statistics-service
+  namespace: piggymetrics
+  labels:
+    app: statistics-service
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: statistics-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: statistics-service
+        version: v1
+    spec:
+      containers:
+        - name: statistics-service
+          image: ccr.ccs.tencentyun.com/piggymetrics/statistics-service:1.0.2
+          env:
+            - name: MONGODB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGODB_HOST
+                  name: piggymetrics-env
+                  optional: false
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MONGODB_USER
+                  name: piggymetrics-keys
+                  optional: false
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MONGODB_PASSWORD
+                  name: piggymetrics-keys
+                  optional: false
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  key: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+                  name: piggymetrics-env
+                  optional: false
+            - name: SW_AGENT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: SW_AGENT_AUTHENTICATION
+                  name: piggymetrics-keys
+                  optional: false
+          ports:
+            - containerPort: 7000
+              protocol: TCP
+
+---
+# notification-service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+  namespace: piggymetrics
+  labels:
+    app: notification-service
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: notification-service
+        version: v1
+    spec:
+      containers:
+        - name: notification-service
+          image: ccr.ccs.tencentyun.com/piggymetrics/notification-service:1.0.2
+          env:
+            - name: MONGODB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGODB_HOST
+                  name: piggymetrics-env
+                  optional: false
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MONGODB_USER
+                  name: piggymetrics-keys
+                  optional: false
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MONGODB_PASSWORD
+                  name: piggymetrics-keys
+                  optional: false
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  key: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+                  name: piggymetrics-env
+                  optional: false
+            - name: SW_AGENT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: SW_AGENT_AUTHENTICATION
+                  name: piggymetrics-keys
+                  optional: false
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+
+---
+# gateway Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  namespace: piggymetrics
+  labels:
+    app: gateway
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: gateway
+        version: v1
+    spec:
+      containers:
+        - name: gateway
+          image: ccr.ccs.tencentyun.com/piggymetrics/gateway:1.0.5
+          env:
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  key: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+                  name: piggymetrics-env
+                  optional: false
+            - name: SW_AGENT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  key: SW_AGENT_AUTHENTICATION
+                  name: piggymetrics-keys
+                  optional: false
+          ports:
+            - containerPort: 4000
+              protocol: TCP
+
+---
+# 部署 gateway service
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+  namespace: piggymetrics
+  annotations:
+    service.kubernetes.io/loadbalance-id: lb-hfyt76co
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: http
+      port: 80
+      targetPort: 4000
+      protocol: TCP
+  selector: # 将后端服务 gateway 和该 Service 进行映射
+    app: gateway
+    version: v1
+  type: LoadBalancer
+
+---
+# monitoring Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring
+  namespace: piggymetrics
+  labels:
+    app: monitoring
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitoring
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: monitoring
+        version: v1
+    spec:
+      containers:
+        - name: monitoring
+          image: ccr.ccs.tencentyun.com/piggymetrics/monitoring:1.0.1
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+
+---
+# 部署 monitoring service
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitoring
+  namespace: piggymetrics
+  annotations:
+    service.kubernetes.io/loadbalance-id: lb-hfyt76co
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: http
+      port: 9000
+      targetPort: 8080
+      protocol: TCP
+  selector: # 将后端服务 qcbm-gateway 和该 Service 进行映射
+    app: monitoring
+    version: v1
+  type: LoadBalancer
+
+---
+# turbine-stream-service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: turbine-stream-service
+  namespace: piggymetrics
+  labels:
+    app: turbine-stream-service
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: turbine-stream-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: turbine-stream-service
+        version: v1
+    spec:
+      containers:
+        - name: turbine-stream-service
+          image: ccr.ccs.tencentyun.com/piggymetrics/turbine-stream-service:1.0.2
+          ports:
+            - containerPort: 8989
+              protocol: TCP
+
+---
+# 部署 turbine-stream-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: turbine-stream-service
+  namespace: piggymetrics
+  annotations:
+    service.kubernetes.io/loadbalance-id: lb-hfyt76co
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: http
+      port: 8989
+      targetPort: 8989
+      protocol: TCP
+  selector: # 将后端服务 qcbm-gateway 和该 Service 进行映射
+    app: turbine-stream-service
+    version: v1
+  type: LoadBalancer

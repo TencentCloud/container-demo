@@ -1,0 +1,115 @@
+#------------------------------------------------------------------------------
+# PiggyMetrics 集成 CLS 的日志配置 yaml
+#
+# 使用时请将 topicId 替换成实际的值
+#------------------------------------------------------------------------------
+
+---
+apiVersion: cls.cloud.tencent.com/v1
+kind: LogConfig
+metadata:
+  name: auth-log-rule
+spec:
+  clsDetail:
+    extractRule: {}
+    # 单行文本
+    logType: minimalist_log
+    # 日志主题ID，请替换成实际值
+    topicId: 6545846c-7e7a-4a39-a361-ad0bf5780017
+  inputDetail:
+    # 容器标准输出
+    containerStdout:
+      container: auth-service
+      includeLabels:
+        app: auth-service
+        version: v1
+      namespace: piggymetrics
+    type: container_stdout
+
+---
+apiVersion: cls.cloud.tencent.com/v1
+kind: LogConfig
+metadata:
+  name: account-log-rule
+spec:
+  clsDetail:
+    extractRule: {}
+    # 单行文本
+    logType: minimalist_log
+    # 日志主题ID，请替换成实际值
+    topicId: 8438cc9b-888f-469f-9cff-9891270a0a13
+  inputDetail:
+    # 容器标准输出
+    containerStdout:
+      container: account-service
+      includeLabels:
+        app: account-service
+        version: v1
+      namespace: piggymetrics
+    type: container_stdout
+
+---
+apiVersion: cls.cloud.tencent.com/v1
+kind: LogConfig
+metadata:
+  name: notification-log-rule
+spec:
+  clsDetail:
+    extractRule: {}
+    # 单行文本
+    logType: minimalist_log
+    # 日志主题ID，请替换成实际值
+    topicId: 6c84ff47-10bd-402e-809a-8e891a664132
+  inputDetail:
+    # 容器标准输出
+    containerStdout:
+      container: notification-service
+      includeLabels:
+        app: notification-service
+        version: v1
+      namespace: piggymetrics
+    type: container_stdout
+
+---
+apiVersion: cls.cloud.tencent.com/v1
+kind: LogConfig
+metadata:
+  name: statistics-log-rule
+spec:
+  clsDetail:
+    extractRule: {}
+    # 单行文本
+    logType: minimalist_log
+    # 日志主题ID，请替换成实际值
+    topicId: 837aed01-195c-4f16-9ed0-5b06bff26ebf
+  inputDetail:
+    # 容器标准输出
+    containerStdout:
+      container: statistics-service
+      includeLabels:
+        app: statistics-service
+        version: v1
+      namespace: piggymetrics
+    type: container_stdout
+
+---
+apiVersion: cls.cloud.tencent.com/v1
+kind: LogConfig
+metadata:
+  name: gateway-log-rule
+spec:
+  clsDetail:
+    extractRule: {}
+    # 单行文本
+    logType: minimalist_log
+    # 日志主题ID，请替换成实际值
+    topicId: e55563cb-2b93-42e9-a9c9-2eb9a4c835bc
+  inputDetail:
+    # 容器标准输出
+    containerStdout:
+      container: gateway
+      includeLabels:
+        app: gateway
+        version: v1
+      namespace: piggymetrics
+    type: container_stdout
