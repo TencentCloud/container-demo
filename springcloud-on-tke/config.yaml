@@ -28,8 +28,9 @@ metadata:
   namespace: piggymetrics
 data:
   # MongDB 的 IP 地址
-  MONGODB_HOST: 10.0.1.13
-  SW_AGENT_COLLECTOR_BACKEND_SERVICES: ap-shanghai.tencentservicewatcher.com:11800
+  MONGODB_HOST: XXX
+  # TSW 接入点，请替换
+  SW_AGENT_COLLECTOR_BACKEND_SERVICES: XXX
 
 ---
 # 创建 Secret
@@ -41,8 +42,9 @@ metadata:
   labels:
     qcloud-app: piggymetrics-keys
 data:
-  # 请将下面的 XXX 替换为实际值
-  MONGODB_USER: dXNlcg==
-  MONGODB_PASSWORD: dXNlcg==
-  SW_AGENT_AUTHENTICATION: dHN3X3NpdGVAOE5wNlF3V2ticVhtY1pPbzdTX2pJUVpmRWg5QkJuN3ZDX0xSN1ljSndGST0=
+  # mongo-init.js 中创建的用户名和密码，默认为 guest 的 base64 编码字符串，若有修改了mongo-init.js中的用户名和密码，请同步替换
+  MONGODB_USER: Z3Vlc3Q=
+  MONGODB_PASSWORD: Z3Vlc3Q=
+  # 请将下面的 XXX 替换为实际的 TSW 接入点 token 的 base64 编码字符串
+  SW_AGENT_AUTHENTICATION: XXX
 type: Opaque

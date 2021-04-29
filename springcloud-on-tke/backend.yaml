@@ -170,7 +170,7 @@ spec:
     spec:
       containers:
         - name: statistics-service
-          image: ccr.ccs.tencentyun.com/piggymetrics/statistics-service:1.0.2
+          image: ccr.ccs.tencentyun.com/piggymetrics/statistics-service:2.0.00
           env:
             - name: MONGODB_HOST
               valueFrom:
