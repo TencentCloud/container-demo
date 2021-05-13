@@ -1,3 +1,91 @@
 # system ignore
 .DS_Store
-*.bak
+Thumbs.db
+*.orig
+
+# maven ignore
+target/
+*.jar
+!monitor/.mvn/wrapper/maven-wrapper.properties
+*.war
+*.zip
+*.tar
+*.tar.gz
+.flattened-pom.xml
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+
+### VS Code ###
+.vscode/
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# tomcat
+tomcat.8080/
+
+### STS ###
+.apt_generated
+.factorypath
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+# license check result
+license-list
+
+# grpc compiler
+compiler/gradle.properties
+compiler/build/*
+compiler/.gradle/*
+
+# protobuf
+dubbo-serialization/dubbo-serialization-protobuf/build/*
+
+application-prd.properties
+
+k8s/test.yaml
+tmp/
+
+### fron ###
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

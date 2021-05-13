@@ -1,0 +1,149 @@
+/* .container {
+  max-width: 1024px;
+} */
+
+/*
+ * Custom translucent site header
+ */
+
+.site-header {
+  /* default dubbo background */
+  background-color: #099cec; 
+  /* spring cloud background */
+  /* background-color: #6db33f;   */
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+.site-header a {
+  color: #d9d9d9;
+  transition: ease-in-out color .15s;
+}
+.site-header a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.logoutbtn {
+  cursor: pointer;
+}
+
+.logoutbtn:hover {
+  color: #fff;
+}
+
+/*
+ * Dummy devices (replace them with your own or something else entirely!)
+ */
+
+.product-device {
+  position: absolute;
+  right: 10%;
+  bottom: -30%;
+  width: 300px;
+  height: 540px;
+  background-color: #333;
+  border-radius: 21px;
+  -webkit-transform: rotate(30deg);
+  transform: rotate(30deg);
+}
+
+.product-device::before {
+  position: absolute;
+  top: 10%;
+  right: 10px;
+  bottom: 10%;
+  left: 10px;
+  content: "";
+  background-color: rgba(255, 255, 255, .1);
+  border-radius: 5px;
+}
+
+.product-device-2 {
+  top: -25%;
+  right: auto;
+  bottom: 0;
+  left: 5%;
+  background-color: #e5e5e5;
+}
+
+
+/*
+ * Extra utilities
+ */
+.flex-equal > * {
+  -ms-flex: 1;
+  flex: 1;
+}
+@media (min-width: 768px) {
+  .flex-md-equal > * {
+    -ms-flex: 1;
+    flex: 1;
+  }
+}
+
+/*
+ * customer style
+ */
+
+ .itemBox:hover {
+  background-color: #f9f9f9;
+ }
+
+.bookItemBox {
+  padding-top: 1rem;
+}
+
+.bookItemBox a {
+  cursor: pointer;
+}
+
+/* .bookItemBox .bookDesc :hover {
+  opacity:1;
+} */
+
+.bookItemBox .bookImg{
+  /* display:block; */
+  float:left;
+  overflow:hidden;
+}
+
+.bookItemBox .bookDesc{
+  /*margin: 0px 225px 0px 314px;*/
+  /*padding-top: 34px;*/
+  padding-right: 1rem;
+}
+
+.bookItemBox .bookDesc .title{
+  color:#337AB7;
+  font-size: 1.5rem;
+  font-weight:bold;
+}
+.bookItemBox .bookDesc .price{
+  color: red;
+  font-size: 1.2rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.bookItemBox .bookDesc .author{
+  color: #17a2b8 !important;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.bookItemBox .bookDesc .other-info{
+  color:#8d8d8d;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.bookItemBox .bookDesc .abstract {
+  font-size: 18px;
+  line-height: 24px;
+  color: #555;
+  height: 72px;
+  overflow: hidden;
+  padding-top: 0.25rem;
+}
+
+.scaleImg img{transition:all 0.3s ease;}
+.scaleImg:hover img{transform:scale(1.1);}
