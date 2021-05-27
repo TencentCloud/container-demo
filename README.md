@@ -7,5 +7,6 @@
 ## 快速开始
 --- 
 如果您对容器，Kubernetes 已经有基础了解，可使用下方实例快速体验本产品。
-### 使用容器服务 TKE 部署 WordPress 应用
-待更新 - dehonghao
+- [在容器服务 TKE 上部署 Dubbo 微服务应用](https://github.com/TencentCloud/container-demo/tree/main/dubbo-on-tke)
+- [在容器服务 TKE 上部署 SpringCloud 微服务应用](https://github.com/TencentCloud/container-demo/tree/main/springcloud-on-tke)
+
